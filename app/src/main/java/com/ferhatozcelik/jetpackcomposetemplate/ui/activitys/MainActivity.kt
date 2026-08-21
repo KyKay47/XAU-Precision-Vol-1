@@ -101,7 +101,7 @@ fun TradingDashboard() {
                     TradingRow("Signal Bias:", "BULLISH BUY", Color(0xFF4CAF50), bold = true)
                     TradingRow("Confidence:", "88.4%", Color(0xFFFFD700), bold = true)
                     
-                    HorizontalDivider(
+                    Divider(
                         modifier = Modifier.padding(vertical = 10.dp),
                         color = Color.DarkGray
                     )
@@ -111,7 +111,7 @@ fun TradingDashboard() {
                     TradingRow("Take Profit 1 (TP1):", "2668.00", Color(0xFF4CAF50))
                     TradingRow("Take Profit 2 (TP2):", "2680.00", Color(0xFF4CAF50), bold = true)
                     
-                    HorizontalDivider(
+                    Divider(
                         modifier = Modifier.padding(vertical = 10.dp),
                         color = Color.DarkGray
                     )
@@ -126,18 +126,18 @@ fun TradingDashboard() {
 
 @Composable
 fun TradingRow(label: String, value: String, valueColor: Color, bold: Boolean = false) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 3.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = label, color = Color.White, fontSize = 14.sp)
-            Text(
-                text = value, 
-                color = valueColor, 
-                fontSize = 14.sp, 
-                fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal
-            )
-        }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 3.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = label, color = Color.White, fontSize = 14.sp)
+        Text(
+            text = value, 
+            color = valueColor, 
+            fontSize = 14.sp, 
+            fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal
+        )
+    }
 }
