@@ -220,14 +220,14 @@ fun MarketStructureDashboard() {
                     TradingRow("Confluence Rate:", data.confluenceRate, Color(0xFFFFD700), bold = true)
                     TradingRow("Market Structure:", data.marketStructure, getStructureColor(data.marketStructure), bold = true)
 
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = Color(0xFF2C2C2C))
+                    Divider(modifier = Modifier.padding(vertical = 8.dp), color = Color(0xFF2C2C2C))
 
                     Text("TIMEFRAME TREND ALIGNMENT", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
                     TradingRow("H4 Macro Bias:", data.h4Bias, getBiasColor(data.h4Bias))
                     TradingRow("H1 Intermediate:", data.h1Bias, getBiasColor(data.h1Bias))
                     TradingRow("M15 Execution:", data.m15Bias, getBiasColor(data.m15Bias))
 
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = Color(0xFF2C2C2C))
+                    Divider(modifier = Modifier.padding(vertical = 8.dp), color = Color(0xFF2C2C2C))
 
                     Text("RISK MANAGEMENT", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color(0xFFFFD700))
                     TradingRow(
@@ -237,7 +237,7 @@ fun MarketStructureDashboard() {
                         bold = true
                     )
 
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = Color(0xFF2C2C2C))
+                    Divider(modifier = Modifier.padding(vertical = 8.dp), color = Color(0xFF2C2C2C))
 
                     Text("TRADE EXECUTION BOUNDS", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
                     TradingRow("Entry Zone:", "${fmt(data.entryLow)} - ${fmt(data.entryHigh)}", Color.Cyan, bold = true)
