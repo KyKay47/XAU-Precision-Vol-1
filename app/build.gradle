@@ -16,7 +16,7 @@ android {
     compileSdk appCompileSdkVersion
 
     defaultConfig {
-        applicationId "com.ferhatozcelik.jetpackcomposetemplate"
+        applicationId "com.kykay47.xautrading"
         minSdk appMinSdkVersion
         targetSdk appTargetSdkVersion
         versionCode 1
