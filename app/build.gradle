@@ -16,7 +16,7 @@ android {
     compileSdk appCompileSdkVersion
 
     defaultConfig {
-        applicationId "com.kykay47.xautrading"
+        applicationId "com.kykay47.xau1trading"
         minSdk appMinSdkVersion
         targetSdk appTargetSdkVersion
         versionCode 1
