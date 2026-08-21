@@ -2,6 +2,11 @@
 
 package com.ferhatozcelik.jetpackcomposetemplate.ui.activitys
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,10 +21,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.NotificationCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +38,7 @@ import kotlin.math.abs
 import kotlin.math.max
 
 private const val API_KEY = "1ea0815d07484662b581a62d339707bd"
+private const val CHANNEL_ID = "xau_signal_alerts"
 
 object SignalCache {
     var cachedResult: AnalysisResult? = null
@@ -61,6 +69,7 @@ data class AnalysisResult(
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createNotificationChannel(this)
         setContent {
             MaterialTheme(colorScheme = darkColorScheme()) {
                 Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFF121212)) {
@@ -71,13 +80,47 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+private fun createNotificationChannel(context: Context) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val name = "XAU Signal Alerts"
+        val descriptionText = "Notifications for high-confluence trading signals"
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+            description = descriptionText
+        }
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+}
+
+private fun triggerHighConfluenceAlert(context: Context, bias: String, confluence: String) {
+    try {
+        val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val ringtone = RingtoneManager.getRingtone(context, soundUri)
+        ringtone?.play()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
+    val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+        .setSmallIcon(android.R.drawable.stat_notify_chat)
+        .setContentTitle("🚨 High Confluence Signal Alert!")
+        .setContentText("$bias — Confluence: $confluence")
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setAutoCancel(true)
+
+    notificationManager.notify(1001, builder.build())
+}
+
 @Composable
 fun MarketStructureDashboard() {
+    val context = LocalContext.current
     var analysis by remember { mutableStateOf<AnalysisResult?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     
-    var balanceInput by remember { mutableStateOf("100") }
+    var balanceInput by remember { mutableStateOf("3751.49") }
     var riskPercentInput by remember { mutableStateOf("1") }
     
     val scope = rememberCoroutineScope()
@@ -101,6 +144,10 @@ fun MarketStructureDashboard() {
                 SignalCache.cachedResult = result
                 SignalCache.lastFetchTime = System.currentTimeMillis()
                 analysis = result
+
+                if (result.bias.contains("STRONG")) {
+                    triggerHighConfluenceAlert(context, result.bias, result.confluenceRate)
+                }
             } else {
                 errorMessage = "API Rate limit reached or connection error. Please wait 1 minute."
             }
@@ -197,7 +244,7 @@ fun MarketStructureDashboard() {
                 else -> Color(0xFFFF5252)
             }
 
-            val balance = balanceInput.toDoubleOrNull() ?: 100.0
+            val balance = balanceInput.toDoubleOrNull() ?: 3751.49
             val riskPercent = riskPercentInput.toDoubleOrNull() ?: 1.0
             val maxRiskCash = balance * (riskPercent / 100.0)
             
@@ -445,3 +492,4 @@ suspend fun fetchCandlesForInterval(interval: String): List<Candle>? {
         null
     }
 }
+
