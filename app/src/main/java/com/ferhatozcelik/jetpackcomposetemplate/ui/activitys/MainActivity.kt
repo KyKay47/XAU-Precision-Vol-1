@@ -40,7 +40,7 @@ fun TradingDashboard() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -59,7 +59,7 @@ fun TradingDashboard() {
             color = Color.LightGray
         )
         
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         
         Button(
             onClick = { isAnalyzed = !isAnalyzed },
@@ -84,7 +84,7 @@ fun TradingDashboard() {
                 colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E)),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp)
+                    .padding(top = 8.dp)
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
@@ -98,42 +98,46 @@ fun TradingDashboard() {
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("Signal Bias:", color = Color.White)
-                        Text("BULLISH BUY", color = Color(0xFF4CAF50), fontWeight = FontWeight.Bold)
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
+                    TradingRow("Signal Bias:", "BULLISH BUY", Color(0xFF4CAF50), bold = true)
+                    TradingRow("Confidence:", "88.4%", Color(0xFFFFD700), bold = true)
                     
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("Confidence:", color = Color.White)
-                        Text("88.4%", color = Color(0xFFFFD700), fontWeight = FontWeight.Bold)
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        color = Color.DarkGray
+                    )
                     
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("Key Support:", color = Color.White)
-                        Text("2645.50", color = Color.LightGray)
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
+                    TradingRow("Entry Zone:", "2650.00 - 2652.50", Color.Cyan, bold = true)
+                    TradingRow("Stop Loss (SL):", "2642.00", Color(0xFFFF5252), bold = true)
+                    TradingRow("Take Profit 1 (TP1):", "2668.00", Color(0xFF4CAF50))
+                    TradingRow("Take Profit 2 (TP2):", "2680.00", Color(0xFF4CAF50), bold = true)
+                    
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        color = Color.DarkGray
+                    )
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("Key Resistance:", color = Color.White)
-                        Text("2682.10", color = Color.LightGray)
-                    }
+                    TradingRow("Key Support:", "2645.50", Color.LightGray)
+                    TradingRow("Key Resistance:", "2682.10", Color.LightGray)
                 }
             }
         }
     }
+}
+
+@Composable
+fun TradingRow(label: String, value: String, valueColor: Color, bold: Boolean = false) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 3.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = label, color = Color.White, fontSize = 14.sp)
+            Text(
+                text = value, 
+                color = valueColor, 
+                fontSize = 14.sp, 
+                fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal
+            )
+        }
 }
