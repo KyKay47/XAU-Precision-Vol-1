@@ -24,7 +24,7 @@ import java.util.Locale
 import kotlin.math.abs
 
 // REPLACE WITH YOUR FREE TWELVEDATA API KEY
-private const val API_KEY = "YOUR_TWELVEDATA_API_KEY_HERE"
+private const val API_KEY = "1ea0815d07484662b581a62d339707bd"
 
 data class AnalysisResult(
     val currentPrice: Double,
