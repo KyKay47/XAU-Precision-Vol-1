@@ -13,35 +13,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ferhatozcelik.jetpackcomposetemplate.util.CompleteMarketAnalysis
-import com.ferhatozcelik.jetpackcomposetemplate.util.TradeSignal
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.ferhatozcelik.jetpackcomposetemplate.domain.model.CompleteMarketAnalysis
+import com.ferhatozcelik.jetpackcomposetemplate.domain.model.TradeSignal
 
 @Composable
-fun MainScreen(viewModel: HomeViewModel) {
+fun MainScreen(viewModel: GoldViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "XAU/USD Precision Engine",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold
-        )
-
-        Button(
-            onClick = { viewModel.analyzeGoldMarket() },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Analyze Gold Market")
-        }
-
         when (val state = uiState) {
-            is GoldUiState.Idle -> Text("Tap Analyze to evaluate live structure.")
             is GoldUiState.Loading -> CircularProgressIndicator()
             is GoldUiState.Success -> AnalysisCard(analysis = state.data)
             is GoldUiState.Error -> Text("Error: ${state.message}", color = Color.Red)
@@ -58,7 +42,7 @@ fun AnalysisCard(analysis: CompleteMarketAnalysis) {
     }
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(16.dp),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(
@@ -79,15 +63,15 @@ fun AnalysisCard(analysis: CompleteMarketAnalysis) {
             }
 
             Text("Rationale: ${analysis.rationale}", fontSize = 14.sp)
-            HorizontalDivider()
+            Divider()
 
             // Market Structure
             Text("Market Structure", fontWeight = FontWeight.Bold)
             Text("• H4 Trend: ${analysis.structure.h4Trend}")
             Text("• H1 Trend: ${analysis.structure.h1Trend}")
             Text("• Key Swing High: $${analysis.structure.swingHigh}")
-            Text("• Key Swing Low: $${analysis.structure.swingLow}")
-            HorizontalDivider()
+
+            Divider()
 
             // Price Action & Movement
             Text("Price Action & Movement", fontWeight = FontWeight.Bold)
