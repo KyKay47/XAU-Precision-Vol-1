@@ -1,12 +1,13 @@
 package com.ferhatozcelik.jetpackcomposetemplate.di
 
-import android.app.Application
+import android.content.Context
 import androidx.room.Room
-import com.ferhatozcelik.jetpackcomposetemplate.data.dao.ExampleDao
 import com.ferhatozcelik.jetpackcomposetemplate.data.local.AppDatabase
+import com.ferhatozcelik.jetpackcomposetemplate.data.dao.ExampleDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -16,12 +17,16 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(application: Application, callback: AppDatabase.Callback): AppDatabase {
-        return Room.databaseBuilder(application, AppDatabase::class.java, "local_database").fallbackToDestructiveMigration().addCallback(callback).build()
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "app_database"
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides
     fun provideExampleDao(database: AppDatabase): ExampleDao {
-        return database.getExampleDao()
+        return database.exampleDao()
     }
 }
