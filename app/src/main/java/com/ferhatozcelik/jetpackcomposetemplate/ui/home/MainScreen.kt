@@ -14,8 +14,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ferhatozcelik.jetpackcomposetemplate.data.model.CompleteMarketAnalysis
-import com.ferhatozcelik.jetpackcomposetemplate.data.model.TradeSignal
+import com.ferhatozcelik.jetpackcomposetemplate.domain.model.CompleteMarketAnalysis
+import com.ferhatozcelik.jetpackcomposetemplate.domain.model.TradeSignal
 
 @Composable
 fun MainScreen(viewModel: GoldViewModel = hiltViewModel()) {
