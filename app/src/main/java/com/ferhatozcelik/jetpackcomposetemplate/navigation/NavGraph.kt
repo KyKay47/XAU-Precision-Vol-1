@@ -11,19 +11,18 @@ import com.ferhatozcelik.jetpackcomposetemplate.ui.home.MainScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {
-
     NavHost(
-        navController = navController, startDestination = Screen.Main.route
+        navController = navController,
+        startDestination = Screen.Main.route
     ) {
-
         composable(Screen.Main.route) {
             MainScreen(navController = navController)
         }
         composable(
-            "${Screen.Detail.route}/{id}",
+            route = "${Screen.Detail.route}/{id}",
             arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) {
-            DetailScreen(navController = navController, id = it.arguments?.getInt("id") ?: 0)
+            DetailScreen(navController = navController)
         }
     }
 }
