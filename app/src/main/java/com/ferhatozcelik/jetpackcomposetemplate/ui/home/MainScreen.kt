@@ -42,7 +42,9 @@ fun AnalysisCard(analysis: CompleteMarketAnalysis) {
     }
 
     Card(
-        modifier = Modifier.fillMaxWidth().padding(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(
