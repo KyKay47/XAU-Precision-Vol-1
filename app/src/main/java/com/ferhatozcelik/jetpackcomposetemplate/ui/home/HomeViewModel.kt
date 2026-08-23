@@ -1,10 +1,10 @@
-
 package com.ferhatozcelik.jetpackcomposetemplate.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ferhatozcelik.jetpackcomposetemplate.data.repository.GoldRepository
-import com.ferhatozcelik.jetpackcomposetemplate.data.repository.MultiTimeframeCandles
+import com.ferhatozcelik.jetpackcomposetemplate.util.CompleteMarketAnalysis
+import com.ferhatozcelik.jetpackcomposetemplate.util.MarketStructureEngine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 sealed interface GoldUiState {
     object Idle : GoldUiState
     object Loading : GoldUiState
-    data class Success(val data: MultiTimeframeCandles) : GoldUiState
+    data class Success(val data: CompleteMarketAnalysis) : GoldUiState
     data class Error(val message: String) : GoldUiState
 }
 
@@ -32,9 +32,10 @@ class HomeViewModel @Inject constructor(
             _uiState.value = GoldUiState.Loading
             try {
                 val candleData = goldRepository.fetchGoldCandles()
-                _uiState.value = GoldUiState.Success(candleData)
+                val analysis = MarketStructureEngine.evaluate(candleData)
+                _uiState.value = GoldUiState.Success(analysis)
             } catch (e: Exception) {
-                _uiState.value = GoldUiState.Error(e.message ?: "Failed to fetch market data")
+                _uiState.value = GoldUiState.Error(e.message ?: "Failed to analyze market")
             }
         }
     }
