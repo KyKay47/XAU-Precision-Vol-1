@@ -1,12 +1,10 @@
 plugins {
-    alias(libs.plugins.com.android.application)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
-    alias(libs.plugins.com.google.dagger.hilt.android)
-    alias(libs.plugins.com.google.devtools.ksp)
-    id('kotlin-parcelize')
-    // id("com.google.gms.google-services") // Google Play Services
-    // id("com.google.firebase.crashlytics") // Google Play Services
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp' version '1.9.10-1.0.13'
+    id 'dagger.hilt.android.plugin'
 }
+
 hilt {
     enableAggregatingTask = true
 }
