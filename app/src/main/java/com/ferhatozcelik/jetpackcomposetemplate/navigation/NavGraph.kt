@@ -23,7 +23,7 @@ fun NavGraph(navController: NavHostController) {
             arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getInt("id") ?: 0
-            DetailScreen(id = id)
+            DetailScreen(id = id, navController = navController)
         }
     }
 }
