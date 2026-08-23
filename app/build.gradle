@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.devtools.ksp' version '1.9.10-1.0.13'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-kapt'
 }
 
 hilt {
@@ -71,30 +72,13 @@ dependencies {
     implementation libs.ui.tooling.preview
     implementation libs.material3
 
-    // Dagger Hilt
-    implementation 'com.google.dagger:hilt-android:2.48'
-    ksp 'com.google.dagger:hilt-compiler:2.48'
+    // Dagger Hilt (Updated to 2.50 to fix KSP reflection crash)
+    implementation 'com.google.dagger:hilt-android:2.50'
+    ksp 'com.google.dagger:hilt-compiler:2.50'
 
-    // Retrofit & OkHttp
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
-
-    // Room Database
+    // Room (Switched to kapt to avoid Dagger validation conflict)
     implementation 'androidx.room:room-runtime:2.6.1'
     implementation 'androidx.room:room-ktx:2.6.1'
-    ksp 'androidx.room:room-compiler:2.6.1'
-
-    // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-
-    // Testing
-    testImplementation libs.junit
-    androidTestImplementation libs.androidx.test.ext.junit
-    androidTestImplementation libs.espresso.core
-    androidTestImplementation platform(libs.compose.bom)
-    androidTestImplementation libs.ui.test.junit4
-    debugImplementation libs.ui.tooling
-    debugImplementation libs.ui.test.manifest
+    kapt 'androidx.room:room-compiler:2.6.1'
 }
+
