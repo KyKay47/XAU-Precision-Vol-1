@@ -1,43 +1,50 @@
 package com.ferhatozcelik.jetpackcomposetemplate.di
 
-import com.ferhatozcelik.jetpackcomposetemplate.data.remote.AppApi
-import com.ferhatozcelik.jetpackcomposetemplate.util.BASE_URL
+import com.ferhatozcelik.jetpackcomposetemplate.data.remote.GoldApiService
+import com.ferhatozcelik.jetpackcomposetemplate.data.repository.GoldRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Qualifier
 import javax.inject.Singleton
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class ApplicationScope
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ApiModule {
+object AppModule {
 
     @Provides
     @Singleton
-    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    @ApplicationScope
+    fun provideApplicationScope(): CoroutineScope = CoroutineScope(SupervisorJob())
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.binance.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor(logging).build()
+    fun provideGoldApiService(retrofit: Retrofit): GoldApiService {
+        return retrofit.create(GoldApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideRetrofit(client: OkHttpClient): Retrofit {
-        return Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).client(client).build()
+    fun provideGoldRepository(apiService: GoldApiService): GoldRepository {
+        return GoldRepository(apiService)
     }
-
-    @Provides
-    @Singleton
-    fun provideAppApi(retrofit: Retrofit): AppApi {
-        return retrofit.create(AppApi::class.java)
-    }
-
 }
+
