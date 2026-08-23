@@ -1,5 +1,7 @@
 package com.ferhatozcelik.jetpackcomposetemplate.di
 
+import com.ferhatozcelik.jetpackcomposetemplate.data.remote.GoldApiService
+import com.ferhatozcelik.jetpackcomposetemplate.data.repository.GoldRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,5 +33,17 @@ object AppModule {
             .baseUrl("https://api.binance.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoldApiService(retrofit: Retrofit): GoldApiService {
+        return retrofit.create(GoldApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoldRepository(apiService: GoldApiService): GoldRepository {
+        return GoldRepository(apiService)
     }
 }
