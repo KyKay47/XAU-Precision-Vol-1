@@ -1,9 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.devtools.ksp' version '1.9.10-1.0.13'
-    id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 hilt {
@@ -58,11 +57,6 @@ android {
     }
 }
 
-ksp {
-    arg("room.generateKotlin", "true")
-    arg("dagger.fastInit", "enabled")
-}
-
 dependencies {
     // Core & Kotlin
     implementation libs.kotlin.stdlib
@@ -77,11 +71,11 @@ dependencies {
     implementation libs.ui.tooling.preview
     implementation libs.material3
 
-    // Dagger Hilt
-    implementation 'com.google.dagger:hilt-android:2.51.1'
-    ksp 'com.google.dagger:hilt-compiler:2.51.1'
+    // Dagger Hilt (Running under KAPT)
+    implementation 'com.google.dagger:hilt-android:2.50'
+    kapt 'com.google.dagger:hilt-compiler:2.50'
 
-    // Room
+    // Room (Running under KAPT)
     implementation 'androidx.room:room-runtime:2.6.1'
     implementation 'androidx.room:room-ktx:2.6.1'
     kapt 'androidx.room:room-compiler:2.6.1'
