@@ -1,29 +1,22 @@
 package com.ferhatozcelik.jetpackcomposetemplate.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.ferhatozcelik.jetpackcomposetemplate.ui.detail.DetailScreen
-import com.ferhatozcelik.jetpackcomposetemplate.ui.home.MainScreen
+import com.ferhatozcelik.jetpackcomposetemplate.MarketViewModel
+import com.ferhatozcelik.jetpackcomposetemplate.ui.home.MarketChartScreen
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun SetupNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Main.route
+        startDestination = "market_chart"
     ) {
-        composable(Screen.Main.route) {
-            MainScreen()
-        }
-        composable(
-            route = "${Screen.Detail.route}/{id}",
-            arguments = listOf(navArgument("id") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val id = backStackEntry.arguments?.getInt("id") ?: 0
-            DetailScreen(id = id, navController = navController)
+        composable(route = "market_chart") {
+            val marketViewModel: MarketViewModel = viewModel()
+            MarketChartScreen(viewModel = marketViewModel)
         }
     }
 }
