@@ -1,4 +1,5 @@
-package com.ferhatozcelik.jetpackcomposetemplate.ui
+package com.ferhatozcelik.jetpackcomposetemplate.ui.home
+
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
