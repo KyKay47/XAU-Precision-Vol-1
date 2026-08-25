@@ -247,7 +247,3 @@ object MarketStructureEngine {
             action = action,
             movement = movement,
             rationale = rationale
-        )
-    }
-}
-
